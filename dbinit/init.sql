@@ -28,7 +28,7 @@ BEGIN
     INSERT INTO places(city, county, country) 
     VALUES (p_city, p_county, p_country);
 
-    SET @PLACE_ID = LAST_INSERTED_ID();
+    SET @PLACE_ID = LAST_INSERT_ID();
 
     SELECT * FROM places WHERE id = @PLACE_ID;
 END //
@@ -45,3 +45,22 @@ CREATE TABLE IF NOT EXISTS people (
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (place_of_birth_id) REFERENCES places(id)
 );
+
+DELIMITER //
+
+CREATE PROCEDURE create_people(
+    IN p_given_name VARCHAR(255),
+    IN p_family_name VARCHAR(255),
+    IN p_date_of_birth DATE,
+    IN p_place_of_birth_id INT
+)
+BEGIN
+    INSERT INTO people(given_name, family_name, date_of_birth, places_of_birth_id)
+    VALUES (p_given_name, p_family_name, p_date_of_birth, p_place_of_birth_id);
+
+    SET @PEOPLE_ID = LAST_INSERT_ID();
+
+    SELECT * FROM people WHERE id = @PEOPLE_ID;
+END //
+
+DELIMITER ;
