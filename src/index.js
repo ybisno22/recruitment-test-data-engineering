@@ -2,6 +2,8 @@ import express from 'express';
 import ip from 'ip';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import placesRoutes from './route/places.route.js';
+import peopleRoutes from './route/people.route.js';
 import Response from './util/response.js';
 import HttpStatus from './util/httpStatus.js';
 
@@ -16,7 +18,11 @@ const PORT = process.env.SERVER_PORT || 3000;
 app.use(cors({ origin: '*'}));
 app.use(express.json());
 
-// Root route for testing
+// Routes
+app.use('/api/places', placesRoutes);
+app.use('/api/people', peopleRoutes);
+
+// Default route
 app.get('/', (req, res) => {
     res.send(new Response(HttpStatus.OK.code, HttpStatus.OK.status, 'People and Places API v1.0.0'));
 });
