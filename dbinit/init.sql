@@ -3,8 +3,11 @@ CREATE DATABASE IF NOT EXISTS people_places_db;
 USE people_places_db;
 
 -- Only for development
-DROP TABLE IF EXISTS places;
 DROP TABLE IF EXISTS people;
+DROP TABLE IF EXISTS places;
+
+DROP PROCEDURE IF EXISTS create_place;
+DROP PROCEDURE IF EXISTS create_people;
 
 CREATE TABLE IF NOT EXISTS places (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -43,6 +46,7 @@ CREATE TABLE IF NOT EXISTS people (
     place_of_birth_id INT UNSIGNED NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
     FOREIGN KEY (place_of_birth_id) REFERENCES places(id)
 );
 
@@ -55,7 +59,7 @@ CREATE PROCEDURE create_people(
     IN p_place_of_birth_id INT
 )
 BEGIN
-    INSERT INTO people(given_name, family_name, date_of_birth, places_of_birth_id)
+    INSERT INTO people(given_name, family_name, date_of_birth, place_of_birth_id)
     VALUES (p_given_name, p_family_name, p_date_of_birth, p_place_of_birth_id);
 
     SET @PEOPLE_ID = LAST_INSERT_ID();

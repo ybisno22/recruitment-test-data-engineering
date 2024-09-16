@@ -1,5 +1,5 @@
 import express from 'express';
-import { getPlaces, createPlace, getPlaceById, updatePlace, deletePlace } from '../controllers/places.controller.js';
+import { getPlaces, createPlace, getPlaceById, updatePlace, deletePlace } from '../controller/places.controller.js';
 
 const placesRoutes = express.Router();
 

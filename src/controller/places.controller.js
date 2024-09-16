@@ -65,7 +65,7 @@ export const updatePlace = async (req, res) => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method} ${req.originalUrl} Request`);
 
     try {
-        const pool = connection();
+        const pool = await connection();
         const { city, county, country } = req.body;
         const { id } = req.params;
 
@@ -91,7 +91,7 @@ export const deletePlace = async (req, res) => {
     console.info(`[${new Date().toLocaleString()}] Incoming ${req.method} ${req.originalUrl} Request`);
 
     try {
-        const pool = connection();
+        const pool = await connection();
         const { id } = req.params;
 
         const [results] = await pool.query(PLACES_QUERY.DELETE_PLACE, [id]);

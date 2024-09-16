@@ -11,12 +11,12 @@ services:
       - ./dbinit/init.sql:/docker-entrypoint-initdb.d/0_init.sql
       - mysql_data:/var/lib/mysql
     environment:
-      - MYSQL_DATABASE: people_places_db
-      - MYSQL_USER: admin
-      - MYSQL_PASSWORD: admin
-      - MYSQL_ROOT_PASSWORD: admin
-      - SERVICE_TAGS: prod
-      - SERVICE_NAME: database
+      MYSQL_DATABASE: people_places_db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+      SERVICE_TAGS: prod
+      SERVICE_NAME: database
     ports:
       - 3306:3306
     expose:
