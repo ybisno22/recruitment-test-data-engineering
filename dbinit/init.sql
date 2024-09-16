@@ -17,6 +17,24 @@ CREATE TABLE IF NOT EXISTS places (
     CONSTRAINT UQ_Places_City UNIQUE (city)
 );
 
+DELIMITER //
+
+CREATE PROCEDURE create_place(
+    IN p_city VARCHAR(255),
+    IN p_county VARCHAR(255),
+    IN p_country VARCHAR(255)
+)
+BEGIN
+    INSERT INTO places(city, county, country) 
+    VALUES (p_city, p_county, p_country);
+
+    SET @PLACE_ID = LAST_INSERTED_ID();
+
+    SELECT * FROM places WHERE id = @PLACE_ID;
+END //
+
+DELIMITER ;
+
 CREATE TABLE IF NOT EXISTS people (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     given_name VARCHAR(255) NOT NULL,
