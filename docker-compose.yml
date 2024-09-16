@@ -3,21 +3,31 @@ version: "3.7"
 services:
   database:
     image: mysql:8.0
+    container_name: mysqlcontainer
     platform: linux/amd64
     command:
       - "--default-authentication-plugin=mysql_native_password"
-    environment:
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes
-      - MYSQL_DATABASE=codetest
-      - MYSQL_USER=codetest
-      - MYSQL_PASSWORD=swordfish
-    ports:
-      - "3306:3306"
-    restart: always
-
-  example-node:
-    image: example-node
-    build: images/example-node
-    command: ["./example.js"]
     volumes:
-      - ./data:/data
+      - ./dbinit/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE: people_places_db
+      - MYSQL_USER: admin
+      - MYSQL_PASSWORD: admin
+      - MYSQL_ROOT_PASSWORD: admin
+      - SERVICE_TAGS: prod
+      - SERVICE_NAME: database
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    restart: unless-stopped
+    networks:
+      - internalnet
+
+networks:
+  internalnet:
+    driver: bridge
+
+volumes:
+  mysql_data:
