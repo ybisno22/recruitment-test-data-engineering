@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS people (
     given_name VARCHAR(255) NOT NULL,
     family_name VARCHAR(255) NOT NULL,
     date_of_birth DATE NOT NULL,
-    places_of_birth_id INT UNSIGNED NOT NULL,
+    place_of_birth_id INT UNSIGNED NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (places_of_birth_id) REFERENCES places(id)
+    FOREIGN KEY (place_of_birth_id) REFERENCES places(id)
 );
