@@ -27,7 +27,7 @@ Below is the entity relationship diagram illustrating the database schema used i
 
 - **Node.js**
 - **MySQL**
-- **Docker**: 
+- **Docker**
 - **Docker Compose**
 
 ### Project Structure
