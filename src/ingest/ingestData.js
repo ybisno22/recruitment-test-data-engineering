@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { loadPlaces } from './loadPlaces.js';
 import { loadPeople } from './loadPeople.js';
 

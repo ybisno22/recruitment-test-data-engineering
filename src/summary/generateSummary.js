@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { connection } from '../config/mysql.config.js';
 import fs from 'fs/promises';
 
