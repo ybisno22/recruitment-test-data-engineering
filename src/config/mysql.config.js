@@ -5,12 +5,12 @@ dotenv.config();
 
 export const connection = async () => {
     const pool = await createPool({
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'admin',
-        password: process.env.DB_PASSWORD || 'admin',
-        database: process.env.DB_NAME || 'people_places_db',
-        port: process.env.DB_PORT || 3306,
-        connectionLimit: process.env.DB_CONNECTION_LIMIT || 20,
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        port: process.env.DB_PORT,
+        connectionLimit: process.env.DB_CONNECTION_LIMIT,
     });
 
     return pool;

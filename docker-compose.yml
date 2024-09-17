@@ -1,28 +1,89 @@
 services:
   database:
     image: mysql:8.0
-    container_name: mysqlcontainer
     platform: linux/amd64
-    command:
-      - "--default-authentication-plugin=mysql_native_password"
+    container_name: mysqlcontainer
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
     volumes:
       - ./dbinit/init.sql:/docker-entrypoint-initdb.d/0_init.sql
       - /var/lib/mysql
+    ports:
+      - 3306:3306
     environment:
       MYSQL_DATABASE: people_places_db
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
       MYSQL_ROOT_PASSWORD: admin
-      SERVICE_TAGS: prod
-      SERVICE_NAME: database
-    ports:
-      - 3306:3306
-    expose:
-      - 3306
-    restart: unless-stopped
+    networks:
+      - internalnet
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  
+  nodeapp:
+    container_name: nodeapp
+    build: .
+    image: nodeapp:v1
+    volumes:
+      - ./src:/app/src
+    ports: 
+      - 3000:3000
+    expose: 
+      - 3000
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_USER: 'admin'
+      DB_PASSWORD: 'admin'
+      DB_NAME: people_places_db
+      DB_CONNECTION_LIMIT: 20
+      SERVER_PORT: 3000
+    depends_on:
+      - database
+    networks:
+      - internalnet
+
+  ingest:
+    build:
+      context: .
+      dockerfile: src/ingest/Dockerfile
+    volumes:
+      - ./data:/app/data
+    container_name: ingestcontainer 
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_USER: 'admin'
+      DB_PASSWORD: 'admin'
+      DB_NAME: people_places_db
+      DB_CONNECTION_LIMIT: 20
+    networks:
+      - internalnet
+
+  summary:
+    build:
+      context: .
+      dockerfile: src/generateSummary/Dockerfile
+    volumes:
+      - ./data:/app/data
+    container_name: summarycontainer
+    environment:
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_USER: 'admin'
+      DB_PASSWORD: 'admin'
+      DB_NAME: people_places_db
+      DB_CONNECTION_LIMIT: 20
     networks:
       - internalnet
 
 networks:
   internalnet:
+    name: internalnet
     driver: bridge
