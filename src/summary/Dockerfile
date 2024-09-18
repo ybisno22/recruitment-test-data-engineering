@@ -15,4 +15,4 @@ COPY src /app/src
 COPY data /app/data
 
 # Command to run the generateSummary script
-CMD ["node", "src/generateSummary/generateSummary.js"]
+CMD ["node", "src/summary/generateSummary.js"]

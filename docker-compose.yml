@@ -69,7 +69,7 @@ services:
   summary:
     build:
       context: .
-      dockerfile: src/generateSummary/Dockerfile
+      dockerfile: src/summary/Dockerfile
     volumes:
       - ./data:/app/data
     container_name: summarycontainer
