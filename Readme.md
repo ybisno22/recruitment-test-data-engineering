@@ -27,10 +27,10 @@ Below is the entity relationship diagram illustrating the database schema used i
 
 - **Node.js**
 - **MySQL**
-- **Docker**: 
+- **Docker**
 - **Docker Compose**
 
-### Project Structure
+## Project Structure
 
 - **data**: Contains the CSV files (`places.csv`, `people.csv`) and output file (`summary_output.json`).
 - **src**: Contains source code for data ingestion, summary generation, and CRUD operations.
